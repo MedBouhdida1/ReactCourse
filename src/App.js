@@ -74,7 +74,7 @@ function App() {
   return (
     <div>
       <header className="App-header">
-        <Search onSearch={handleSearch} />
+        <Search search={SearchTerm} onSearch={handleSearch} />
         <p>{SearchTerm}</p>
         <List ff={searchesStories} />
       </header>
@@ -105,9 +105,11 @@ const Item = (props) => (
   </li>
 );
 
-function Search(props) {
 
+// If there is only one instruction, it should be enclosed in parentheses however if there is more than one instruction, we need to use curly braces and include a return statement.
+const Search = (props) => {
 
+  const { search, onSearch } = props
   //or with arrow function
   // const handlechange = (event) => {
   //   console.log(event.target.value)
@@ -118,7 +120,7 @@ function Search(props) {
   return (
     <div>
       <label htmlFor='search'>Search :</label>
-      <input type="text" id="search" onChange={props.onSearch} onCopy={copy}></input>
+      <input type="text" id="search" value={search} onChange={onSearch} onCopy={copy}></input>
 
     </div>
   )
