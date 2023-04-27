@@ -65,7 +65,7 @@ function App() {
   }]
   const [SearchTerm, search] = useState(localStorage.getItem("search") || 'React')
   const [stories, setStories] = useState(list)
-  const searchesStories = list.filter(function (story) {
+  const searchesStories = stories.filter(function (story) {
     return story.title.toLowerCase().includes(SearchTerm.toLowerCase())
   })
   const handleRemoveStory = (item) => {
@@ -91,7 +91,7 @@ function App() {
         >Search :</InputWithLabel>
         {/* <Search search={SearchTerm} onSearch={handleSearch} /> */}
         <p>{SearchTerm}</p>
-        <List ff={stories} onRemoveItem={handleRemoveStory} />
+        <List ff={searchesStories} onRemoveItem={handleRemoveStory} />
       </header>
 
     </div >
