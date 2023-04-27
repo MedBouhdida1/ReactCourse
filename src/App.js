@@ -63,13 +63,14 @@ function App() {
     points: 4,
     objectID: 1,
   }]
-  const [SearchTerm, search] = useState("React")
+  const [SearchTerm, search] = useState(localStorage.getItem("search") || 'React')
 
   const searchesStories = list.filter(function (story) {
     return story.title.toLowerCase().includes(SearchTerm.toLowerCase())
   })
   const handleSearch = (event) => {
     search(event.target.value)
+    localStorage.setItem('search', event.target.value)
   }
   return (
     <div>
@@ -94,14 +95,14 @@ const List = (prop) => (
   </ul>
 
 );
-const Item = ({ item }) => (
+const Item = ({ aa }) => (
   <li>
     <span>
-      <a href={item.url}>{props.aa.title}</a>
+      <a href={aa.url}>{aa.title}</a>
     </span>
-    <span>{item.author}</span>
-    <span>{item.num_comments}</span>
-    <span>{item.points}</span>
+    <span>{aa.author}</span>
+    <span>{aa.num_comments}</span>
+    <span>{aa.points}</span>
   </li>
 );
 
