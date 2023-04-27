@@ -94,14 +94,14 @@ const List = (prop) => (
   </ul>
 
 );
-const Item = (props) => (
+const Item = ({ item }) => (
   <li>
     <span>
-      <a href={props.aa.url}>{props.aa.title}</a>
+      <a href={item.url}>{props.aa.title}</a>
     </span>
-    <span>{props.aa.author}</span>
-    <span>{props.aa.num_comments}</span>
-    <span>{props.aa.points}</span>
+    <span>{item.author}</span>
+    <span>{item.num_comments}</span>
+    <span>{item.points}</span>
   </li>
 );
 
