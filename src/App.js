@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // const title = "react"
 // const welcome = {
 //   greeting: "hey",
@@ -64,10 +64,18 @@ function App() {
     objectID: 1,
   }]
   const [SearchTerm, search] = useState(localStorage.getItem("search") || 'React')
-
+  const [stories, setStories] = useState(list)
   const searchesStories = list.filter(function (story) {
     return story.title.toLowerCase().includes(SearchTerm.toLowerCase())
   })
+  const handleRemoveStory = (item) => {
+    const newStories = stories.filter((story) => item.objectID !== story.objectID)
+    setStories(newStories)
+  }
+  useEffect(() => {
+    localStorage.setItem('search', SearchTerm)
+  }, [SearchTerm])
+
   const handleSearch = (event) => {
     search(event.target.value)
     localStorage.setItem('search', event.target.value)
@@ -75,9 +83,15 @@ function App() {
   return (
     <div>
       <header className="App-header">
-        <Search search={SearchTerm} onSearch={handleSearch} />
+        <InputWithLabel
+          id="search"
+          label="Search"
+          value={SearchTerm}
+          onInputChange={handleSearch}
+        >Search :</InputWithLabel>
+        {/* <Search search={SearchTerm} onSearch={handleSearch} /> */}
         <p>{SearchTerm}</p>
-        <List ff={searchesStories} />
+        <List ff={stories} onRemoveItem={handleRemoveStory} />
       </header>
 
     </div >
@@ -86,25 +100,52 @@ function App() {
   );
 }
 
+
+const InputWithLabel = ({
+  id,
+  value,
+  type = 'text',
+  onInputChange,
+  children
+}) => (
+  <>
+    <label htmlFor={id}>{children}</label>
+    &nbsp;
+    <input
+      id={id}
+      type={type}
+      value={value}
+      onChange={onInputChange}
+    />
+  </>
+);
 const List = (prop) => (
 
   <ul>
     {prop.ff.map((item) => (
-      <Item key={item.objectID} aa={item} />
+      <Item key={item.objectID} aa={item} onRemoveItem={prop.onRemoveItem} />
     ))}
   </ul>
 
 );
-const Item = ({ aa }) => (
-  <li>
-    <span>
-      <a href={aa.url}>{aa.title}</a>
-    </span>
-    <span>{aa.author}</span>
-    <span>{aa.num_comments}</span>
-    <span>{aa.points}</span>
-  </li>
-);
+const Item = ({ aa, onRemoveItem }) => {
+  const handleRemoveitem = () => {
+    onRemoveItem(aa)
+  }
+  return (
+    <li>
+      <span>
+        <a href={aa.url}>{aa.title}</a>
+      </span>
+      <span>{aa.author}</span>
+      <span>{aa.num_comments}</span>
+      <span>{aa.points}</span>
+      <span>
+        <button type='button' onClick={handleRemoveitem}>remove</button>
+      </span>
+    </li>
+  );
+};
 
 
 // If there is only one instruction, it should be enclosed in parentheses however if there is more than one instruction, we need to use curly braces and include a return statement.
